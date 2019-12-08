@@ -31,7 +31,7 @@ Variables and defaults for this role:
 | timesyncd_fallback_servers | [ 2.de.pool.ntp.org, 3.de.pool.ntp.org ] | List of ntp servers used as fallback |
 | timesyncd_root_distance_max_seconds | 5 | Maximum acceptable root distance as time value (in seconds), default = 5 |
 | timesyncd_poll_interval_min_sec | 32 | Minimum poll interval in seconds for ntp messages, must be greater than 16 and smaller than timesyncd_poll_interval_max_sec |
-| timesyncd_poll_interval_max_sec | 2048 | Maximum poll interval in seconfs for ntp messages, must be greater than timesyncd_poll_interval_min_sec |
+| timesyncd_poll_interval_max_sec | 2048 | Maximum poll interval in seconds for ntp messages, must be greater than timesyncd_poll_interval_min_sec |
 
 ## Dependencies
 
