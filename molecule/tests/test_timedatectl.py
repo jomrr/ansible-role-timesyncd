@@ -28,21 +28,20 @@ def test_timesyncd_service(host):
         assert service.is_running
         assert service.is_enabled
 
+# works locally with docker, podman and vbox, but not on travis
+# and I do not know why at the moment
+# def test_timedatectl(host):
 
-def test_timedatectl(host):
+#     os = host.system_info.distribution
 
-    os = host.system_info.distribution
+#     if os == 'arch' or os == 'debian':
+#         cmd = "/usr/bin/timedatectl show-timesync"
+#         cmd_out = "SystemNTPServers=0.de.pool.ntp.org 1.de.pool.ntp.org"
+#     elif os == 'ubuntu':
+#         cmd = "/usr/bin/timedatectl"
+#         cmd_out = "System clock synchronized: yes"
 
-    if os == 'arch' or os == 'debian':
-        cmd = "/usr/bin/timedatectl show-timesync"
-        cmd_out = "SystemNTPServers=0.de.pool.ntp.org 1.de.pool.ntp.org"
-    elif os == 'ubuntu':
-        cmd = "/usr/bin/timedatectl"
-        cmd_out = "System clock synchronized: yes"
-
-    # works locally with docker, podman and vbox, but not on travis
-    # and I do not know why at the moment
-    # if os == 'arch' or os == 'debian' or os == 'ubuntu':
-    #     assert host.run(cmd).rc == 0
-    #     output = host.check_output(cmd)
-    #     assert cmd_out in output
+#     if os == 'arch' or os == 'debian' or os == 'ubuntu':
+#         assert host.run(cmd).rc == 0
+#         output = host.check_output(cmd)
+#         assert cmd_out in output
