@@ -1,4 +1,4 @@
-# ansible-role-timesyncd
+# ansible-role-timesyncd ![GitHub](https://img.shields.io/github/license/jam82/ansible-role-timesyncd) [![Build Status](https://travis-ci.org/jam82/ansible-role-timesyncd.svg?branch=master)](https://travis-ci.org/jam82/ansible-role-timesyncd)
 
 Ansible role for setting up systemd-timesyncd.
 
