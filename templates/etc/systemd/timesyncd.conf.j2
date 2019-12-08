@@ -1,0 +1,22 @@
+# timesyncd configuration
+# vim: ft=conf
+#
+# {{ ansible_managed }}
+
+[Time]
+
+{% if timesyncd_fallback_servers is defined and timesyncd_fallback_servers | length %}
+NTP={{ timesyncd_ntp_servers | join(' ') }}
+{% endif %}
+{% if timesyncd_fallback_servers is defined and timesyncd_fallback_servers | length %}
+FallbackNTP={{ timesyncd_fallback_servers | join(' ') }}
+{% endif %}
+{% if timesyncd_root_distance_max_seconds is defined and timesyncd_root_distance_max_seconds > 0 %}
+RootDistanceMaxSec={{ timesyncd_root_distance_max_seconds }}
+{% endif %}
+{% if timesyncd_poll_interval_min_sec is defined and timesyncd_poll_interval_min_sec > 16 %}
+PollIntervalMinSec={{ timesyncd_poll_interval_min_sec }}
+{% endif %}
+{% if timesyncd_poll_interval_max_sec is defined and timesyncd_poll_interval_max_sec > timesyncd_poll_interval_min_sec %}
+PollIntervalMaxSec={{ timesyncd_poll_interval_max_sec }}
+{% endif -%}

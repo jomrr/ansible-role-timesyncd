@@ -1,0 +1,7 @@
+---
+# role: ansible-role-timesyncd
+# file: vars/main.yml
+
+timesyncd_timedatectl: '/usr/bin/timedatectl'
+
+timesyncd_remove_package: 'ntp'

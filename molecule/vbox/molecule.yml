@@ -1,0 +1,56 @@
+---
+# role: ansible-role-timesyncd
+# file: molecule/vbox/molecule.yml
+
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+    type: virtualbox
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/shared/yamllint.yml
+platforms:
+  - name: timesyncd-arch
+    box: "archlinux/archlinux"
+    cpus: 2
+    memory: 1024
+  - name: timesyncd-centos8
+    box: "centos/8"
+    cpus: 2
+    memory: 1024
+  - name: timesyncd-debian10
+    box: "debian/buster64"
+    cpus: 2
+    memory: 1024
+  - name: timesyncd-ubuntu1804
+    box: "ubuntu/bionic64"
+    cpus: 2
+    memory: 1024
+provisioner:
+  name: ansible
+  log: True
+  lint:
+    name: ansible-lint
+  playbooks:
+    prepare: prepare.yml
+    converge: ../shared/playbook.yml
+  inventory:
+    group_vars:
+      all:
+        timesyncd_enabled: True
+scenario:
+  name: vbox
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore"
+  directory: ../tests
+  options:
+    v: True
+    sudo: True
+  lint:
+    name: flake8
