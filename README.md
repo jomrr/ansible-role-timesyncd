@@ -2,6 +2,9 @@
 
 Ansible role for setting up systemd-timesyncd.
 
+> **Attention**:
+> The package `ntp` will be uninstalled by this role.
+
 The role is only applied if
 
 * ansible_os_family == "Archlinux"
