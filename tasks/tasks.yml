@@ -4,7 +4,7 @@
 
 - name: "Remove ntp packages"
   package:
-    name: "{{ timesyncd_remove_package }}"
+    name: "{{ timesyncd_remove_packages }}"
     state: absent
 
 - name: "Run timedatectl status"
