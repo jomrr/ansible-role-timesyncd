@@ -4,6 +4,6 @@
 
 timesyncd_timedatectl: '/usr/bin/timedatectl'
 
-timesyncd_remove_packages: 
+timesyncd_remove_packages:
   - ntp
   - chrony
