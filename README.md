@@ -6,18 +6,15 @@
 using `systemd-timesyncd`.**
 
 > **Attention**:
-> The packages `chrony` and `ntp` will be uninstalled by this role.
+> The package `ntp` will be uninstalled by this role.
 
 The role is only applied if `ansible_service_manager == 'systemd'`.
 
 ## Supported Platforms
 
 - Archlinux
-- CentOS 8
 - Debian 9, 10
-- Fedora 31
-- OpenSuse Leap 15
-- Ubuntu 18.04, 20.04
+- Ubuntu 16.04, 18.04, 20.04
 
 ## Requirements
 
@@ -34,7 +31,7 @@ Variables and defaults for this role:
 
 # The role is disabled by default, so you do not get in trouble.
 # Checked in tasks/main.yml which includes tasks.yml if enabled.
-timesyncd_enabled: False
+timesyncd_role_enabled: False
 
 timesyncd_timezone: "Europe/Berlin"
 

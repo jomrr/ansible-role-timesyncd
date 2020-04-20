@@ -9,4 +9,4 @@
     - name: "Include variables to converge playbook"
       include_vars: vars.yml
   roles:
-    - role: ../../../../ansible-role-timesyncd
+    - role: ansible-role-timesyncd

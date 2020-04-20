@@ -2,6 +2,9 @@
 # role: ansible-role-timesyncd
 # file: vars/main.yml
 
+timesyncd_packages:
+  - tzdata
+
 timesyncd_remove_packages:
   - ntp
   - chrony

@@ -30,7 +30,7 @@ def get_vars(host):
 
 
 def test_common(host, get_vars):
-    assert get_vars['common_role_enabled'] is True
+    assert get_vars['timesyncd_role_enabled'] is True
 
 
 def test_system_info(host):

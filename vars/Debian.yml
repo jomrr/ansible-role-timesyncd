@@ -1,0 +1,6 @@
+---
+# role: ansible-role-timesyncd
+# file: vars/Debian.yml
+
+timesyncd_packages:
+  - tzdata

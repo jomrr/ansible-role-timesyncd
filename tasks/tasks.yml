@@ -2,6 +2,14 @@
 # role: ansible-role-timesyncd
 # file: tasks/tasks.yml
 
+- name: Set os_family dependent variables
+  include_vars: '{{ ansible_os_family }}.yml'
+
+- name: "Install timezone data"
+  package:
+    name: "{{ timesyncd_packages }}"
+    state: present
+
 - name: "Remove ntp packages"
   package:
     name: "{{ timesyncd_remove_packages }}"
@@ -23,7 +31,7 @@
   notify: Restart and enable systemd-timesyncd
 
 - name: "Set timezone"
-  command: "sudo timedatectl set-timezone {{ timesyncd_timezone | quote }}"
+  command: "timedatectl set-timezone {{ timesyncd_timezone }}"
   when: timesyncd_timezone not in timedatectl_result.stdout
 
 - name: "Enable ntp"
