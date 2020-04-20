@@ -12,13 +12,11 @@ The role is only applied if `ansible_service_manager == 'systemd'`.
 
 ## Supported Platforms
 
-- Amazonlinux 2
 - Archlinux
-- CentOS 7, 8
+- CentOS 8
 - Debian 9, 10
 - Fedora 31
-- Oraclelinux 7, 8
-- Suse 15
+- OpenSuse Leap 15
 - Ubuntu 18.04, 20.04
 
 ## Requirements
