@@ -1,14 +1,17 @@
 ---
 # role: ansible-role-timesyncd
-# file: molecule/vbox/molecule.yml
+# file: molecule/kvm/molecule.yml
 
 dependency:
   name: galaxy
 driver:
   name: vagrant
   provider:
-    name: virtualbox
-    type: virtualbox
+    name: libvirt
+    type: libvirt
+    options:
+      memory: 2048
+      cpus: 2
 lint: |
   set -e
   yamllint .
@@ -17,36 +20,14 @@ lint: |
 platforms:
   - name: timesyncd-arch
     box: "archlinux/archlinux"
-    cpus: 2
-    memory: 1024
   - name: timesyncd-centos8
     box: "centos/8"
-    cpus: 2
-    memory: 1024
-  - name: timesyncd-debian9
-    box: "debian/stretch64"
-    cpus: 2
-    memory: 1024
   - name: timesyncd-debian10
     box: "debian/buster64"
-    cpus: 2
-    memory: 1024
   - name: timesyncd-fedora31
     box: "fedora/31-cloud-base"
-    cpus: 2
-    memory: 1024
-  - name: timesyncd-suse-leap-15
-    box: "bento/opensuse-leap-15"
-    cpus: 2
-    memory: 1024
   - name: timesyncd-ubuntu1804
-    box: "ubuntu/bionic64"
-    cpus: 2
-    memory: 1024
-  - name: timesyncd-ubuntu2004
-    box: "ubuntu/focal64"
-    cpus: 2
-    memory: 1024
+    box: "generic/ubuntu1804"
 provisioner:
   name: ansible
   log: True

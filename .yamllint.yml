@@ -1,5 +1,5 @@
 ---
-# role: ansible-role-timesyncd
+# role: ansible-role-up
 # file: molecule/shared/yamllint.yml
 
 extends: default
