@@ -10,11 +10,11 @@ galaxy_info:
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
-  # issue_tracker_url: http://example.com/issue/tracker
+  issue_tracker_url: https://github.com/jam82/ansible-role-timesyncd/issues
 
   license: MIT
 
-  min_ansible_version: 2.7
+  min_ansible_version: 2.8
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -25,16 +25,23 @@ galaxy_info:
   #
   platforms:
     - name: Archlinux
-      versions:
-        - all
-    - name: Debian
+    - name: CentOS
       versions:
         - 8
+    - name: Debian
+      versions:
         - 9
+        - 10
+    - name: Fedora
+      versions:
+        - 31
+    - name: OpenSuse Leap
+      versions:
+        - 15
     - name: Ubuntu
       versions:
-        - 16
-        - 18
+        - 18.04
+        - 20.04
 
   galaxy_tags: []
 
