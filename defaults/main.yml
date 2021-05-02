@@ -1,28 +1,28 @@
 ---
-# role: ansible-role-timesyncd
+# role: ansible-role-systemd-timesyncd
 # file: defaults/main.yml
 
 # The role is disabled by default, so you do not get in trouble.
 # Checked in tasks/main.yml which includes tasks.yml if enabled.
-timesyncd_role_enabled: False
+systemd_timesyncd_role_enabled: false
 
-timesyncd_timezone: "Europe/Berlin"
+systemd_timesyncd_timezone: "Europe/Berlin"
 
-timesyncd_ntp_servers:
+systemd_timesyncd_ntp_servers:
   - 0.de.pool.ntp.org
   - 1.de.pool.ntp.org
 
-timesyncd_fallback_servers:
+systemd_timesyncd_fallback_servers:
   - 2.de.pool.ntp.org
   - 3.de.pool.ntp.org
 
 # Maximum acceptable root distance as time value (in seconds), default = 5
-timesyncd_root_distance_max_seconds: 5
+systemd_timesyncd_root_distance_max_seconds: 5
 
 # Minimum poll interval in seconds for ntp messages,
-# must be greater than 16 and smaller than timesyncd_poll_interval_max_sec
-timesyncd_poll_interval_min_sec: 32
+# must be greater than 16 and smaller than systemd_timesyncd_poll_interval_max_sec
+systemd_timesyncd_poll_interval_min_sec: 32
 
 # Maximum poll interval in seconds for ntp messages,
-# must be greater than timesyncd_poll_interval_min_sec
-timesyncd_poll_interval_max_sec: 2048
+# must be greater than systemd_timesyncd_poll_interval_min_sec
+systemd_timesyncd_poll_interval_max_sec: 2048

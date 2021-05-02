@@ -1,5 +1,0 @@
----
-# role: ansible-role-timesyncd
-# file: molecule/resources/playbooks/vars.yml
-
-timesyncd_role_enabled: True
