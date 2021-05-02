@@ -1,6 +1,0 @@
----
-# role: ansible-role-timesyncd
-# file: vars/Archlinux.yml
-
-timesyncd_packages:
-  - tzdata

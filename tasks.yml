@@ -1,5 +1,5 @@
 ---
-# role: ansible-role-timesyncd
+# role: ansible-role-systemd-timesyncd
 # file: tasks.yml
 
 # Playbook to list tasks with `ansible-playbook tasks.yml --list-tasks`.
@@ -8,4 +8,4 @@
 - name: Show structure of current role
   hosts: all
   roles:
-    - role: ../ansible-role-timesyncd
+    - role: ../ansible-role-systemd-timesyncd

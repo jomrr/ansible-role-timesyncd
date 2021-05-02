@@ -1,13 +1,48 @@
 ---
-# role: ansible-role-timesyncd
+# role: ansible-role-systemd-timesyncd
 # file: tasks/main.yml
 
-- name: Import tasks for role ansible-role-timesyncd
-  import_tasks: tasks.yml
-  when: timesyncd_role_enabled | bool
+- name: "Tasks for role ansible-role-systemd-timesyncd"
+  block:
+    - name: "Install dbus and timezone data"
+      package:
+        name: "{{ systemd_timesyncd_packages }}"
+        state: present
+
+    - name: "Ensure DBus is started for timedatectl"
+      systemd:
+        name: dbus
+        enabled: true
+        masked: false
+        state: started
+
+    - name: "Remove conflicting packages"
+      package:
+        name: "{{ systemd_timesyncd_remove_packages }}"
+        state: absent
+
+    - name: "Run timedatectl status"
+      command: "{{ systemd_timesyncd_timedatectl | quote }} status"
+      changed_when: false
+      check_mode: false
+      register: timedatectl_result
+
+    - name: "Write timesyncd.conf"
+      template:
+        src: "etc/systemd/timesyncd.conf.j2"
+        dest: "/etc/systemd/timesyncd.conf"
+        owner: root
+        group: root
+        mode: 0644
+      notify: systemd-timesyncd up
+
+    - name: "Set timezone"
+      command: "timedatectl set-timezone {{ systemd_timesyncd_timezone }}"
+      when: systemd_timesyncd_timezone not in timedatectl_result.stdout
+
+    - name: "Enable ntp"
+      command: "{{ systemd_timesyncd_timedatectl | quote }} set-ntp 1"
+      when: "'Network time on: no' in timedatectl_result.stdout"
+  when: systemd_timesyncd_role_enabled | bool
     and ansible_service_mgr == 'systemd'
-    and ansible_os_family == 'Archlinux'
-    or (ansible_distribution == 'Debian' and ansible_distribution_major_version is version("9", ">="))
-    or (ansible_distribution == 'Fedora' and ansible_distribution_major_version is version("29", ">="))
-    or (ansible_distribution == 'openSUSE Leap' and ansible_distribution_major_version is version("15", ">="))
-    or (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version("16", ">="))
+    and ansible_os_family not in ['RedHat']
