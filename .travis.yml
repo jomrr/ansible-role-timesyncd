@@ -2,38 +2,20 @@
 # role: ansible-role-systemd-timesyncd
 # file: .travis.yml
 
+os: linux
+dist: focal
+
 language: python
-
-python:
-  - "3.9"
-
-services: docker
 
 branches:
   only:
     - main
 
-cache:
-  pip: true
-  directories:
-  - ".tox"
-
-env:
-  global:
-    - TOX_PARALLEL_NO_SPINNER=1
-  jobs:
-    - TOX_IMG="Arch"      TOX_ANSIBLE="{209,210,211}"
-    - TOX_IMG="Debian"    TOX_ANSIBLE="{209,210,211}"
-    - TOX_IMG="OpenSuse"  TOX_ANSIBLE="{209,210,211}"
-    - TOX_IMG="Ubuntu"    TOX_ANSIBLE="{209,210,211}"
-
 before_install:
   - python -m pip install --upgrade pip
 
 install:
-  - pip install tox-travis
+  - pip install ansible yamllint ansible-lint
 
 script:
-  - tox -e $(echo py${TRAVIS_PYTHON_VERSION} | tr -d .)-an${TOX_ANSIBLE}-${TOX_IMG} -p
-  - rm -r .tox/py*/log/*
-  - find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+  - ansible-lint
