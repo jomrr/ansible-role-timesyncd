@@ -1,6 +1,6 @@
 # ansible-role-systemd-timesyncd
 
-![GitHub](https://img.shields.io/github/license/jam82/ansible-role-systemd-timesyncd) [![Build Status](https://travis-ci.org/jam82/ansible-role-systemd-timesyncd.svg?branch=main)](https://travis-ci.org/jam82/ansible-role-systemd-timesyncd)
+![GitHub](https://img.shields.io/github/license/jomrr/ansible-role-systemd-timesyncd) [![Build Status](https://travis-ci.org/jomrr/ansible-role-systemd-timesyncd.svg?branch=main)](https://travis-ci.org/jomrr/ansible-role-systemd-timesyncd)
 
 **Ansible role for configuring network time synchronisation
 using `systemd-timesyncd`.**
@@ -76,11 +76,11 @@ None.
 
 ## License and Author
 
-- Author:: [jam82](https://github.com/jam82/)
-- Copyright:: 2020, [jam82](https://github.com/jam82/)
+- Author:: [jomrr](https://github.com/jomrr/)
+- Copyright:: 2020, [jomrr](https://github.com/jomrr/)
 
 Licensed under [MIT License](https://opensource.org/licenses/MIT).
-See [LICENSE](https://github.com/jam82/ansible-role-ntp/blob/master/LICENSE) file in repository.
+See [LICENSE](https://github.com/jomrr/ansible-role-ntp/blob/master/LICENSE) file in repository.
 
 ## References
 
