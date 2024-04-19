@@ -1,11 +1,15 @@
 ---
-# role: ansible-role-systemd-timesyncd
+# repo: jomrr/ansible-role-timesyncd
 # file: vars/main.yml
 
 _systemd_timesyncd_packages:
   default:
     - dbus
     - tzdata
+  RedHat:
+    - dbus
+    - tzdata
+    - systemd-udev
   Suse:
     - timezone
 

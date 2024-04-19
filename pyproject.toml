@@ -1,19 +1,18 @@
 [project]
-name = "ansible-role-systemd-timesyncd"
+name = "timesyncd"
 version = "0.0.0"
-description = "Ansible role for setting up systemd-timesyncd."
+description = "Ansible role to configure systemd-timesyncd."
 authors = ["Jonas Mauer"]
 license = "MIT"
-keywords = []
-
-repository = "https://github.com/jomrr/ansible-role-systemd-timesyncd"
+keywords = ["systemd", "timesyncd", "time", "ntp"]
+repository = "https://github.com/jomrr/ansible-role-timesyncd"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
 
 [tool.semantic_release]
 commit_message = "build(release): version {version}"
-major_on_zero = true
+major_on_zero = false
 upload_to_pypi = false
 upload_to_vcs_release = true
 version_toml = [

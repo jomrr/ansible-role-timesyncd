@@ -1,9 +1,10 @@
 ---
-# role: ansible-role-systemd-timesyncd
+# repo: jomrr/ansible-role-timesyncd
 # file: handlers/main.yml
 
-- name: systemd-timesyncd up
-  systemd:
+- name: "Restart systemd-timesyncd"
+  become: true
+  ansible.builtin.systemd:
     name: systemd-timesyncd
     enabled: true
     masked: false

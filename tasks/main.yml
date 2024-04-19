@@ -1,48 +1,52 @@
 ---
-# role: ansible-role-systemd-timesyncd
+# repo: jomrr/ansible-role-timesyncd
 # file: tasks/main.yml
 
-- name: "Tasks for role ansible-role-systemd-timesyncd"
-  block:
-    - name: "Install dbus and timezone data"
-      package:
-        name: "{{ systemd_timesyncd_packages }}"
-        state: present
+- name: "Install dbus and timezone data"
+  become: true
+  ansible.builtin.package:
+    name: "{{ systemd_timesyncd_packages }}"
+    state: present
 
-    - name: "Ensure DBus is started for timedatectl"
-      systemd:
-        name: dbus
-        enabled: true
-        masked: false
-        state: started
+- name: "Ensure DBus is started for timedatectl"
+  become: true
+  ansible.builtin.systemd:
+    name: dbus
+    enabled: true
+    masked: false
+    state: started
 
-    - name: "Remove conflicting packages"
-      package:
-        name: "{{ systemd_timesyncd_remove_packages }}"
-        state: absent
+- name: "Remove conflicting packages"
+  become: true
+  ansible.builtin.package:
+    name: "{{ systemd_timesyncd_remove_packages }}"
+    state: absent
 
-    - name: "Run timedatectl status"
-      command: "{{ systemd_timesyncd_timedatectl | quote }} status"
-      changed_when: false
-      check_mode: false
-      register: timedatectl_result
+- name: "Run timedatectl status"
+  become: true
+  ansible.builtin.command: "{{ systemd_timesyncd_timedatectl | quote }} status"
+  changed_when: false
+  check_mode: false
+  register: timedatectl_result
 
-    - name: "Write timesyncd.conf"
-      template:
-        src: "etc/systemd/timesyncd.conf.j2"
-        dest: "/etc/systemd/timesyncd.conf"
-        owner: root
-        group: root
-        mode: 0644
-      notify: systemd-timesyncd up
+- name: "Write timesyncd.conf"
+  become: true
+  ansible.builtin.template:
+    src: "etc/systemd/timesyncd.conf.j2"
+    dest: "/etc/systemd/timesyncd.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "Restart systemd-timesyncd"
 
-    - name: "Set timezone"
-      command: "timedatectl set-timezone {{ systemd_timesyncd_timezone }}"
-      when: systemd_timesyncd_timezone not in timedatectl_result.stdout
+- name: "Set timezone"
+  become: true
+  ansible.builtin.command: "timedatectl set-timezone {{ systemd_timesyncd_timezone }}"
+  changed_when: systemd_timesyncd_timezone not in timedatectl_result.stdout
+  when: systemd_timesyncd_timezone not in timedatectl_result.stdout
 
-    - name: "Enable ntp"
-      command: "{{ systemd_timesyncd_timedatectl | quote }} set-ntp 1"
-      when: "'Network time on: no' in timedatectl_result.stdout"
-  when: systemd_timesyncd_role_enabled | bool
-    and ansible_service_mgr == 'systemd'
-    and ansible_os_family not in ['RedHat']
+- name: "Enable ntp"
+  become: true
+  ansible.builtin.command: "{{ systemd_timesyncd_timedatectl | quote }} set-ntp 1"
+  changed_when: "'NTP service: active' not in timedatectl_result.stdout"
+  when: "'NTP service: active' in timedatectl_result.stdout"

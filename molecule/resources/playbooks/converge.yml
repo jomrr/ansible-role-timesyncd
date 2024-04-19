@@ -1,11 +1,10 @@
----
-# role: ansible-role-systemd-timesyncd
+# role: jomrr.timesyncd
 # file: molecule/resources/playbooks/converge.yml
+# code: language=ansible-jinja
 
-- name: Converge
+- name: "PLAYBOOK | Converge | timesyncd"
   hosts: all
   become: true
-  vars:
-    systemd_timesyncd_role_enabled: true
-  roles:    # to enable required roles put them in requirements.yml and add here
-    - role: '../ansible-role-systemd-timesyncd'
+  gather_facts: true
+  roles:
+    - role: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY') }}"

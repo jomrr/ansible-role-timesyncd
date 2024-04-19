@@ -1,36 +1,18 @@
 ---
-# role: ansible-role-systemd-timesyncd
+# name: jomrr.timesyncd
 # file: meta/main.yml
 
 galaxy_info:
-  role_name: systemd_timesyncd
-  author: jomrr
-  description: Ansible role for setting up systemd-timesyncd.
-  company: ''
-
-  # If the issue tracker for your role is not on github, uncomment the
-  # next line and provide a value
-  issue_tracker_url: https://github.com/jomrr/ansible-role-systemd-timesyncd/issues
-
+  namespace: jomrr
+  role_name: timesyncd
+  author: Jonas Mauer
+  company: none
+  description: Ansible role to configure systemd-timesyncd.
   license: MIT
-
-  min_ansible_version: "2.9"
-
-  # platforms is a list of platforms, and each platform has a name and a list of versions.
-  platforms:
-    - name: ArchLinux
-      versions:
-        - any
-    - name: Debian
-      versions:
-        - any
-    - name: opensuse
-      versions:
-        - any
-    - name: Ubuntu
-      versions:
-        - any
-
-  galaxy_tags: []
-
-dependencies: []
+  issue_tracker_url: https://github.com/jomrr/ansible-role-timesyncd/issues
+  min_ansible_version: "2.15"
+  galaxy_tags:
+    - systemd
+    - timesyncd
+    - time
+    - ntp
