@@ -30,12 +30,6 @@
         update_cache: true
         upgrade: true
       when: ansible_pkg_mgr == "pacman"
-    - name: "Update yum cache and installed packages"  # noqa: package-latest
-      ansible.builtin.yum:
-        name: "*"
-        state: latest
-        update_cache: true
-      when: ansible_pkg_mgr == "yum"
     - name: "Update zypper cache and installed packages"  # noqa: package-latest
       community.general.zypper:
         name: "*"

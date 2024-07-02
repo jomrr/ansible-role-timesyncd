@@ -2,13 +2,13 @@
 # repo: jomrr/ansible-role-timesyncd
 # file: tasks/main.yml
 
-- name: "Install dbus and timezone data"
+- name: "Role timesyncd | install dbus and timezone data"
   become: true
   ansible.builtin.package:
     name: "{{ systemd_timesyncd_packages }}"
     state: present
 
-- name: "Ensure DBus is started for timedatectl"
+- name: "Role timesyncd | ensure dbus is started for timedatectl"
   become: true
   ansible.builtin.systemd:
     name: dbus
@@ -16,7 +16,7 @@
     masked: false
     state: started
 
-- name: "Remove conflicting packages"
+- name: "Role timesyncd | remove conflicting packages"
   become: true
   ansible.builtin.package:
     name: "{{ systemd_timesyncd_remove_packages }}"
@@ -29,7 +29,7 @@
   check_mode: false
   register: timedatectl_result
 
-- name: "Write timesyncd.conf"
+- name: "Role timesyncd | write timesyncd.conf"
   become: true
   ansible.builtin.template:
     src: "etc/systemd/timesyncd.conf.j2"
@@ -39,13 +39,13 @@
     mode: '0644'
   notify: "Restart systemd-timesyncd"
 
-- name: "Set timezone"
+- name: "Role timesyncd | set timezone"
   become: true
   ansible.builtin.command: "timedatectl set-timezone {{ systemd_timesyncd_timezone }}"
   changed_when: systemd_timesyncd_timezone not in timedatectl_result.stdout
   when: systemd_timesyncd_timezone not in timedatectl_result.stdout
 
-- name: "Enable ntp"
+- name: "Role timesyncd | enable ntp with timedatectl"
   become: true
   ansible.builtin.command: "{{ systemd_timesyncd_timedatectl | quote }} set-ntp 1"
   changed_when: "'NTP service: active' not in timedatectl_result.stdout"
