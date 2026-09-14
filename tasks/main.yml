@@ -1,52 +1,90 @@
 ---
-# repo: jomrr/ansible-role-timesyncd
+# role: timesyncd
 # file: tasks/main.yml
 
-- name: "Role timesyncd | install dbus and timezone data"
-  become: true
-  ansible.builtin.package:
-    name: "{{ systemd_timesyncd_packages }}"
-    state: present
+- name: TIMESYNCD | Load platform packages
+  ansible.builtin.include_vars:
+    file: "{{ lookup('ansible.builtin.first_found', __timesyncd_platform_files) }}"
+  vars:
+    __timesyncd_platform_files:
+      files:
+        - "{{ ansible_facts.distribution }}.yml"
+        - "{{ ansible_facts.os_family }}.yml"
+      paths:
+        - "{{ role_path }}/vars"
 
-- name: "Role timesyncd | ensure dbus is started for timedatectl"
+- name: TIMESYNCD | Validate time limits
+  ansible.builtin.assert:
+    that:
+      - timesyncd_root_distance_max_seconds > 0
+      - timesyncd_poll_interval_min_sec >= 16
+      - timesyncd_poll_interval_max_sec > timesyncd_poll_interval_min_sec
+    quiet: true
+    fail_msg: Root distance must be positive and polling intervals must satisfy 16 <= minimum < maximum.
+
+- name: TIMESYNCD | Install platform repository packages
   become: true
-  ansible.builtin.systemd:
-    name: dbus
-    enabled: true
-    masked: false
+  become_user: root
+  ansible.builtin.package:
+    name: "{{ __timesyncd_repository_package }}"
+    state: present
+  loop: "{{ __timesyncd_repository_packages }}"
+  loop_control:
+    loop_var: __timesyncd_repository_package
+    label: "{{ __timesyncd_repository_package }}"
+
+- name: TIMESYNCD | Remove conflicting time-service packages
+  become: true
+  become_user: root
+  ansible.builtin.package:
+    name: "{{ __timesyncd_remove_package }}"
+    state: absent
+  loop: "{{ timesyncd_remove_packages }}"
+  loop_control:
+    loop_var: __timesyncd_remove_package
+    label: "{{ __timesyncd_remove_package }}"
+
+- name: TIMESYNCD | Install the time service and timezone data
+  become: true
+  become_user: root
+  ansible.builtin.package:
+    name: "{{ __timesyncd_packages }}"
+    state: present
+  notify: reload dbus
+
+- name: TIMESYNCD | Start D-Bus for timezone and time-service management
+  become: true
+  become_user: root
+  ansible.builtin.systemd_service:
+    name: dbus.service
     state: started
 
-- name: "Role timesyncd | remove conflicting packages"
-  become: true
-  ansible.builtin.package:
-    name: "{{ systemd_timesyncd_remove_packages }}"
-    state: absent
+- name: TIMESYNCD | Load newly installed D-Bus policies before starting the time service
+  ansible.builtin.meta: flush_handlers
 
-- name: "Run timedatectl status"
+- name: TIMESYNCD | Set the system timezone
   become: true
-  ansible.builtin.command: "{{ systemd_timesyncd_timedatectl | quote }} status"
-  changed_when: false
-  check_mode: false
-  register: timedatectl_result
+  become_user: root
+  community.general.timezone:
+    name: "{{ timesyncd_timezone }}"
 
-- name: "Role timesyncd | write timesyncd.conf"
+- name: TIMESYNCD | Configure the time service
   become: true
+  become_user: root
   ansible.builtin.template:
-    src: "etc/systemd/timesyncd.conf.j2"
-    dest: "/etc/systemd/timesyncd.conf"
+    src: etc/systemd/timesyncd.conf.j2
+    dest: /etc/systemd/timesyncd.conf
     owner: root
     group: root
     mode: '0644'
-  notify: "Restart systemd-timesyncd"
+    backup: true
+  notify: restart timesyncd
 
-- name: "Role timesyncd | set timezone"
+- name: TIMESYNCD | Enable and start the time service
   become: true
-  ansible.builtin.command: "timedatectl set-timezone {{ systemd_timesyncd_timezone }}"
-  changed_when: systemd_timesyncd_timezone not in timedatectl_result.stdout
-  when: systemd_timesyncd_timezone not in timedatectl_result.stdout
-
-- name: "Role timesyncd | enable ntp with timedatectl"
-  become: true
-  ansible.builtin.command: "{{ systemd_timesyncd_timedatectl | quote }} set-ntp 1"
-  changed_when: "'NTP service: active' not in timedatectl_result.stdout"
-  when: "'NTP service: active' in timedatectl_result.stdout"
+  become_user: root
+  ansible.builtin.systemd_service:
+    name: systemd-timesyncd.service
+    enabled: true
+    masked: false
+    state: started

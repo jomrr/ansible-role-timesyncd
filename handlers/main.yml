@@ -1,11 +1,19 @@
 ---
-# repo: jomrr/ansible-role-timesyncd
+# role: timesyncd
 # file: handlers/main.yml
 
-- name: "Restart systemd-timesyncd"
+- name: TIMESYNCD | Reload D-Bus configuration
   become: true
-  ansible.builtin.systemd:
-    name: systemd-timesyncd
-    enabled: true
-    masked: false
+  become_user: root
+  ansible.builtin.systemd_service:
+    name: dbus.service
+    state: reloaded
+  listen: reload dbus
+
+- name: TIMESYNCD | Restart the time service
+  become: true
+  become_user: root
+  ansible.builtin.systemd_service:
+    name: systemd-timesyncd.service
     state: restarted
+  listen: restart timesyncd

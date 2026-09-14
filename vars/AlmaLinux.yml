@@ -1,0 +1,10 @@
+---
+# role: timesyncd
+# file: vars/AlmaLinux.yml
+
+__timesyncd_repository_packages:
+  - epel-release
+__timesyncd_packages:
+  - dbus
+  - tzdata
+  - systemd-timesyncd

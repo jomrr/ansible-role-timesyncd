@@ -1,24 +1,33 @@
 ---
-# repo: jomrr/ansible-role-timesyncd
+# role: timesyncd
 # file: defaults/main.yml
 
-systemd_timesyncd_timezone: "Europe/Berlin"
+# System timezone from the installed timezone database.
+timesyncd_timezone: Europe/Berlin
+# timesyncd_timezone: UTC
 
-systemd_timesyncd_ntp_servers:
+# System NTP servers; per-link servers may also be used.
+timesyncd_ntp_servers:
   - 0.de.pool.ntp.org
   - 1.de.pool.ntp.org
 
-systemd_timesyncd_fallback_servers:
+# Fallback servers used when no system or per-link NTP servers are configured.
+# An empty list leaves the distribution's built-in fallback servers in effect.
+timesyncd_fallback_servers:
   - 2.de.pool.ntp.org
   - 3.de.pool.ntp.org
+# timesyncd_fallback_servers: []
 
-# Maximum acceptable root distance as time value (in seconds), default = 5
-systemd_timesyncd_root_distance_max_seconds: 5
+# Maximum acceptable root distance in seconds; must be positive.
+timesyncd_root_distance_max_seconds: 5
 
-# Minimum poll interval in seconds for ntp messages,
-# must be greater than 16 and smaller than systemd_timesyncd_poll_interval_max_sec
-systemd_timesyncd_poll_interval_min_sec: 32
+# Minimum polling interval in seconds; must be at least 16.
+timesyncd_poll_interval_min_sec: 32
 
-# Maximum poll interval in seconds for ntp messages,
-# must be greater than systemd_timesyncd_poll_interval_min_sec
-systemd_timesyncd_poll_interval_max_sec: 2048
+# Maximum polling interval in seconds; must exceed the minimum interval.
+timesyncd_poll_interval_max_sec: 2048
+
+# Conflicting time-service packages removed before installing timesyncd.
+timesyncd_remove_packages:
+  - ntp
+  - chrony

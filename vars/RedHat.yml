@@ -1,0 +1,9 @@
+---
+# role: timesyncd
+# file: vars/RedHat.yml
+
+__timesyncd_repository_packages: []
+__timesyncd_packages:
+  - dbus
+  - tzdata
+  - systemd-udev

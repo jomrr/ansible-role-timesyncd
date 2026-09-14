@@ -1,0 +1,9 @@
+---
+# role: timesyncd
+# file: vars/Suse.yml
+
+__timesyncd_repository_packages: []
+__timesyncd_packages:
+  - dbus-1
+  - timezone
+  - udev

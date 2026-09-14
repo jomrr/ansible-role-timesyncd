@@ -1,20 +1,11 @@
-# managed by ansible role: jomrr.timesyncd
+# Managed by ansible.
 # file: {{ template_destpath }}
 
 [Time]
-
-{% if systemd_timesyncd_fallback_servers is defined and systemd_timesyncd_fallback_servers | length %}
-NTP={{ systemd_timesyncd_ntp_servers | join(' ') }}
+NTP={{ timesyncd_ntp_servers | join(' ') }}
+{% if timesyncd_fallback_servers %}
+FallbackNTP={{ timesyncd_fallback_servers | join(' ') }}
 {% endif %}
-{% if systemd_timesyncd_fallback_servers is defined and systemd_timesyncd_fallback_servers | length %}
-FallbackNTP={{ systemd_timesyncd_fallback_servers | join(' ') }}
-{% endif %}
-{% if systemd_timesyncd_root_distance_max_seconds is defined and systemd_timesyncd_root_distance_max_seconds > 0 %}
-RootDistanceMaxSec={{ systemd_timesyncd_root_distance_max_seconds }}
-{% endif %}
-{% if systemd_timesyncd_poll_interval_min_sec is defined and systemd_timesyncd_poll_interval_min_sec > 16 %}
-PollIntervalMinSec={{ systemd_timesyncd_poll_interval_min_sec }}
-{% endif %}
-{% if systemd_timesyncd_poll_interval_max_sec is defined and systemd_timesyncd_poll_interval_max_sec > systemd_timesyncd_poll_interval_min_sec %}
-PollIntervalMaxSec={{ systemd_timesyncd_poll_interval_max_sec }}
-{% endif -%}
+RootDistanceMaxSec={{ timesyncd_root_distance_max_seconds }}
+PollIntervalMinSec={{ timesyncd_poll_interval_min_sec }}
+PollIntervalMaxSec={{ timesyncd_poll_interval_max_sec }}

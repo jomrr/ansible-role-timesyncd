@@ -1,10 +1,9 @@
-# role: jomrr.timesyncd
+---
+# role: timesyncd
 # file: molecule/resources/playbooks/converge.yml
-# code: language=ansible-jinja
 
-- name: "PLAYBOOK | Converge | timesyncd"
+- name: "Molecule | converge | timesyncd"
   hosts: all
-  become: true
   gather_facts: true
   roles:
     - role: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY') }}"

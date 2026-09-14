@@ -1,0 +1,9 @@
+---
+# role: timesyncd
+# file: vars/Debian.yml
+
+__timesyncd_repository_packages: []
+__timesyncd_packages:
+  - dbus
+  - tzdata
+  - systemd-timesyncd

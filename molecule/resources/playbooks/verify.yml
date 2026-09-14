@@ -1,12 +1,37 @@
-# role: jomrr.timesyncd
+---
+# role: timesyncd
 # file: molecule/resources/playbooks/verify.yml
-# code: language=ansible-jinja
 
-- name: "PLAYBOOK | Verify | timesyncd"
+- name: TIMESYNCD | Verify the configured time client
   hosts: all
   gather_facts: false
   tasks:
-    - name: "Assert true"
-      ansible.builtin.assert:
-        that: "true"
-        fail_msg: "This should never fail"
+    - name: TIMESYNCD | Verify the service is enabled and running
+      ansible.builtin.systemd_service:
+        name: systemd-timesyncd.service
+        enabled: true
+        state: started
+      check_mode: true
+      register: __timesyncd_service
+      failed_when: __timesyncd_service is changed or __timesyncd_service is failed
+
+    - name: TIMESYNCD | Verify the system timezone is UTC
+      ansible.builtin.command:
+        argv: [date, '+%Z']
+      changed_when: false
+      register: __timesyncd_timezone
+      failed_when: __timesyncd_timezone.rc != 0 or __timesyncd_timezone.stdout != 'UTC'
+
+    - name: TIMESYNCD | Verify the daemon loaded the independent server list and minimum polling interval
+      ansible.builtin.command:
+        argv:
+          - timedatectl
+          - show-timesync
+          - --property=SystemNTPServers
+          - --property=PollIntervalMinUSec
+      changed_when: false
+      register: __timesyncd_runtime
+      failed_when: >-
+        __timesyncd_runtime.rc != 0 or
+        'SystemNTPServers=192.0.2.123' not in __timesyncd_runtime.stdout_lines or
+        'PollIntervalMinUSec=16s' not in __timesyncd_runtime.stdout_lines

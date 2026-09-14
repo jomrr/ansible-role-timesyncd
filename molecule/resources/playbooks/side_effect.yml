@@ -1,0 +1,21 @@
+---
+# role: timesyncd
+# file: molecule/resources/playbooks/side_effect.yml
+
+- name: TIMESYNCD | Exercise recovery with unchanged configuration
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: TIMESYNCD | Stop and disable the time service
+      become: true
+      become_user: root
+      ansible.builtin.systemd_service:
+        name: systemd-timesyncd.service
+        enabled: false
+        state: stopped
+
+    - name: TIMESYNCD | Change the system timezone away from UTC
+      become: true
+      become_user: root
+      community.general.timezone:
+        name: Europe/Berlin

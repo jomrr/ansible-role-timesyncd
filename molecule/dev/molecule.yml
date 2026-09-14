@@ -1,6 +1,6 @@
 ---
 # role: timesyncd
-# file: molecule/all/molecule.yml
+# file: molecule/dev/molecule.yml
 
 dependency:
   name: "galaxy"
@@ -53,7 +53,7 @@ scenario:
     - "idempotence"
     - "verify"
     - "destroy"
-  name: "all"
+  name: "dev"
 platforms:
   - name: "almalinux-latest-timesyncd"
     image: "docker.io/jomrr/molecule-almalinux:latest"

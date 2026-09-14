@@ -1,0 +1,56 @@
+---
+# role: timesyncd
+# file: meta/argument_specs.yml
+
+argument_specs:
+  main:
+    short_description: Configure the system timezone and keep systemd-timesyncd installed,
+      enabled and running.
+    options:
+      timesyncd_timezone:
+        type: str
+        default: Europe/Berlin
+        description:
+          - System timezone from the installed timezone database.
+      timesyncd_ntp_servers:
+        type: list
+        elements: str
+        default:
+          - 0.de.pool.ntp.org
+          - 1.de.pool.ntp.org
+        description:
+          - NTP server hostnames or IP addresses, independent of the fallback server list.
+          - An empty list clears the system server list; per-link servers remain available.
+      timesyncd_fallback_servers:
+        type: list
+        elements: str
+        default:
+          - 2.de.pool.ntp.org
+          - 3.de.pool.ntp.org
+        description:
+          - Fallback servers used when neither system nor per-link NTP servers are configured.
+          - An empty list omits FallbackNTP and retains the distribution's built-in fallback
+            servers.
+      timesyncd_root_distance_max_seconds:
+        type: int
+        default: 5
+        description:
+          - Maximum acceptable root distance in seconds; must be positive.
+      timesyncd_poll_interval_min_sec:
+        type: int
+        default: 32
+        description:
+          - Minimum polling interval in seconds; must be at least 16.
+      timesyncd_poll_interval_max_sec:
+        type: int
+        default: 2048
+        description:
+          - Maximum polling interval in seconds; must exceed timesyncd_poll_interval_min_sec.
+      timesyncd_remove_packages:
+        type: list
+        elements: str
+        default:
+          - ntp
+          - chrony
+        description:
+          - Conflicting time-service packages to remove before installing systemd-timesyncd.
