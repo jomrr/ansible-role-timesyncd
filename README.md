@@ -3,8 +3,8 @@
 ![GitHub](https://img.shields.io/github/license/jomrr/ansible-role-timesyncd)
 ![GitHub last commit](https://img.shields.io/github/last-commit/jomrr/ansible-role-timesyncd)
 ![GitHub issues](https://img.shields.io/github/issues-raw/jomrr/ansible-role-timesyncd)
-[![dev](https://img.shields.io/github/actions/workflow/status/jomrr/ansible-role-timesyncd/dev.yml?branch=dev&event=push&label=dev)](https://github.com/jomrr/ansible-role-timesyncd/actions/workflows/dev.yml?query=branch%3Adev)
-[![main](https://img.shields.io/github/actions/workflow/status/jomrr/ansible-role-timesyncd/main.yml?branch=main&event=push&label=main)](https://github.com/jomrr/ansible-role-timesyncd/actions/workflows/main.yml?query=branch%3Amain)
+[![dev](https://img.shields.io/github/actions/workflow/status/jomrr/ansible-role-timesyncd/dev.yml?branch=dev&label=dev)](https://github.com/jomrr/ansible-role-timesyncd/actions/workflows/dev.yml?query=branch%3Adev)
+[![main](https://img.shields.io/github/actions/workflow/status/jomrr/ansible-role-timesyncd/main.yml?branch=main&label=main)](https://github.com/jomrr/ansible-role-timesyncd/actions/workflows/main.yml?query=branch%3Amain)
 
 Ansible role to configure systemd-timesyncd.
 
@@ -214,4 +214,4 @@ is enabled and running.
 This project is licensed under the MIT License.
 See [LICENSE](LICENSE) for the full license text.
 
-Copyright (c) 2019 Jonas Mauer.
+Copyright (c) 2019-2026 Jonas Mauer.
