@@ -12,7 +12,7 @@ timesyncd_ntp_servers:
   - 1.de.pool.ntp.org
 
 # Fallback servers used when no system or per-link NTP servers are configured.
-# An empty list leaves the distribution's built-in fallback servers in effect.
+# An empty list inherits existing fallback configuration or the distribution's built-in servers.
 timesyncd_fallback_servers:
   - 2.de.pool.ntp.org
   - 3.de.pool.ntp.org

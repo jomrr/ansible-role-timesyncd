@@ -29,8 +29,8 @@ argument_specs:
           - 3.de.pool.ntp.org
         description:
           - Fallback servers used when neither system nor per-link NTP servers are configured.
-          - An empty list omits FallbackNTP and retains the distribution's built-in fallback
-            servers.
+          - An empty list omits FallbackNTP and inherits existing fallback configuration,
+            or the distribution's built-in servers if none is configured.
       timesyncd_root_distance_max_seconds:
         type: int
         default: 5

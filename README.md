@@ -20,13 +20,14 @@ disabled service is restored even when its configuration is unchanged.
 
 - Installation of the time service and timezone data.
 - Removal of the packages listed in timesyncd_remove_packages.
-- The system timezone and complete /etc/systemd/timesyncd.conf file.
+- The system timezone and /etc/systemd/timesyncd.conf.d/50-timesyncd.conf
+  drop-in.
 - Enabling, unmasking and starting systemd-timesyncd.service.
 - Installation of epel-release on AlmaLinux to obtain systemd-timesyncd.
 
 ### Not Managed
 
-- Per-link NTP servers and timesyncd.conf.d drop-ins.
+- Per-link NTP servers, the main timesyncd.conf file and other drop-ins.
 - Serving NTP requests to other hosts.
 
 ## Requirements
@@ -40,6 +41,8 @@ disabled service is restored even when its configuration is unchanged.
 collections:
   - name: community.general
     version: '>=12.0.0'
+  - name: ansible.posix
+    version: '>=2.0.0'
 ```
 
 ## Role Variables
@@ -77,8 +80,8 @@ Type: `list`. Required: `false`.
 
 Fallback servers used when neither system nor per-link NTP servers are
 configured.
-An empty list omits FallbackNTP and retains the distribution's built-in fallback
-servers.
+An empty list omits FallbackNTP and inherits existing fallback configuration, or
+the distribution's built-in servers if none is configured.
 
 Default:
 
@@ -141,8 +144,8 @@ timesyncd_remove_packages:
 
 ## Managed Files
 
-- `/etc/systemd/timesyncd.conf` Owned by root with mode 0644; previous contents
-  are backed up.
+- `/etc/systemd/timesyncd.conf.d/50-timesyncd.conf` Owned by root with mode
+  0644; previous contents are backed up.
 
 ## Check Mode
 
@@ -161,11 +164,15 @@ is enabled and running.
 
 - Public variables use the `timesyncd_` prefix. Existing playbooks using
   `systemd_timesyncd_` must rename their variables while retaining the suffix.
-- The NTP and fallback lists are independent. An empty NTP list clears the
-  system server list; an empty fallback list omits FallbackNTP and retains the
-  distribution's built-in fallback servers, matching the previous role behavior.
-- Per-link servers can supplement the system server list, and drop-ins override
-  the main configuration.
+- The role's drop-in replaces NTP server lists from the main configuration and
+  earlier drop-ins, including Anaconda's 10-anaconda.conf. An empty NTP list
+  clears those servers. A nonempty fallback list replaces earlier fallback
+  assignments; an empty list omits FallbackNTP and inherits existing fallback
+  configuration, or the distribution's built-in servers if none is configured.
+- Existing main configuration files, including those written by earlier role
+  versions, and other drop-ins remain in place. No Kickstart cleanup is needed.
+  Drop-ins sorted after 50-timesyncd.conf can change scalar settings or extend
+  or reset server lists. Per-link servers can supplement the system server list.
 - systemd-timesyncd has no native validation command for a candidate
   timesyncd.conf. Argument specs validate input types and a domain assertion
   checks the numeric time limits before changes.

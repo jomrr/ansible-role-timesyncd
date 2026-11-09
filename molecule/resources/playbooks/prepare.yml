@@ -13,6 +13,36 @@
         update_cache: true
       when: ansible_facts.pkg_mgr == 'apt'
 
+    - name: TIMESYNCD | Create the installer configuration directory
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: /etc/systemd/timesyncd.conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: TIMESYNCD | Seed previous main and installer configuration
+      become: true
+      become_user: root
+      ansible.builtin.copy:
+        dest: "{{ __timesyncd_existing_config }}"
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          [Time]
+          NTP=192.0.2.1
+          FallbackNTP=192.0.2.2
+          PollIntervalMinSec=64
+      loop:
+        - /etc/systemd/timesyncd.conf
+        - /etc/systemd/timesyncd.conf.d/10-anaconda.conf
+      loop_control:
+        loop_var: __timesyncd_existing_config
+        label: "{{ __timesyncd_existing_config }}"
+
     - name: TIMESYNCD | Create the container service override directory
       become: true
       become_user: root

@@ -22,16 +22,18 @@
       register: __timesyncd_timezone
       failed_when: __timesyncd_timezone.rc != 0 or __timesyncd_timezone.stdout != 'UTC'
 
-    - name: TIMESYNCD | Verify the daemon loaded the independent server list and minimum polling interval
+    - name: TIMESYNCD | Verify the daemon loaded role settings and inherited fallback servers
       ansible.builtin.command:
         argv:
           - timedatectl
           - show-timesync
           - --property=SystemNTPServers
+          - --property=FallbackNTPServers
           - --property=PollIntervalMinUSec
       changed_when: false
       register: __timesyncd_runtime
       failed_when: >-
         __timesyncd_runtime.rc != 0 or
         'SystemNTPServers=192.0.2.123' not in __timesyncd_runtime.stdout_lines or
+        __timesyncd_runtime.stdout is not search('(?m)^FallbackNTPServers=192[.]0[.]2[.]2( |$)') or
         'PollIntervalMinUSec=16s' not in __timesyncd_runtime.stdout_lines

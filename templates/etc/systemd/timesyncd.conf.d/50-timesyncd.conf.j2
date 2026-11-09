@@ -2,8 +2,12 @@
 # file: {{ template_destpath }}
 
 [Time]
+NTP=
+{% if timesyncd_ntp_servers %}
 NTP={{ timesyncd_ntp_servers | join(' ') }}
+{% endif %}
 {% if timesyncd_fallback_servers %}
+FallbackNTP=
 FallbackNTP={{ timesyncd_fallback_servers | join(' ') }}
 {% endif %}
 RootDistanceMaxSec={{ timesyncd_root_distance_max_seconds }}
